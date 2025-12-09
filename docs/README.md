@@ -1,7 +1,7 @@
 # 📝 Proyecto PHP: CMS para Blog Personal
 
-> **Curso**: Desarrollo Web  
-> **Estudiante**: [Tu Nombre]  
+> **Curso**: DAM
+> **Estudiante**: Luis Cape
 > **Fecha**: Diciembre 2025  
 
 Sistema de gestión de contenido (CMS) para un blog personal, desarrollado en **PHP puro**, con enfoque en buenas prácticas: POO, enrutamiento limpio, seguridad y separación de capas.
