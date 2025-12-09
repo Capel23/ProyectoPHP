@@ -233,7 +233,7 @@ Para usar en producción, considera:
 
 ## 📧 Contacto
 
-**Desarrollador**: Luis Cape  
+**Desarrollador**: Luis Capel  
 **GitHub**: [@Capel23](https://github.com/Capel23)
 
 ---
