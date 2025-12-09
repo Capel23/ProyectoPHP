@@ -13,6 +13,7 @@ class Router {
     +get(path, handler)
     +post(path, handler)
     +dispatch(uri, method)
+    -executeHandler(handler, params)
 }
 
 class Database {
@@ -25,14 +26,22 @@ class SessionManager {
     +{static} login(id, username)
     +{static} logout()
     +{static} isLoggedIn(): bool
+    +{static} getUserId(): int
+    +{static} getUsername(): string
 }
 
 class User {
     -id: int
     -username: string
+    -email: string
     -passwordHash: string
+    +getId(): int
+    +getUsername(): string
+    +getEmail(): string
     +verifyPassword(plain): bool
     +{static} findByUsername(name): ?User
+    +{static} create(username, email, password): bool
+    +{static} hashPassword(plain): string
 }
 
 class Post {
@@ -41,8 +50,23 @@ class Post {
     -title: string
     -slug: string
     -content: string
+    -imagePath: ?string
+    -publishedAt: string
+    -authorName: string
+    +getId(): int
+    +getTitle(): string
+    +getSlug(): string
+    +getContent(): string
+    +getImagePath(): ?string
+    +getPublishedAt(): string
+    +getAuthorName(): string
+    +{static} all(): array
     +{static} findBySlug(slug): ?Post
-    +{static} create(...): bool
+    +{static} findById(id): ?Post
+    +{static} create(userId, title, content, imagePath): bool
+    +{static} update(id, title, content, imagePath): bool
+    +{static} delete(id): bool
+    -{static} generateSlug(title): string
 }
 
 class FileUploader {
@@ -54,15 +78,28 @@ class HomeController {
 }
 
 class PostController {
+    +index()
     +show(slug)
     +adminIndex()
     +create()
     +store()
+    +edit(id)
+    +update(id)
+    +delete(id)
 }
 
 class AuthController {
+    +showLogin()
     +login()
+    +showRegister()
+    +register()
     +logout()
+}
+
+class Validator {
+    +{static} sanitizeString(str): string
+    +{static} validateEmail(email): bool
+    +{static} validateLength(str, min, max): bool
 }
 
 ' Relaciones
@@ -71,8 +108,13 @@ Router --> PostController
 Router --> AuthController
 
 PostController --> Post
+PostController --> FileUploader
+PostController --> Validator
+PostController --> SessionManager
+
 AuthController --> User
 AuthController --> SessionManager
+AuthController --> Validator
 
 Post --> Database
 User --> Database
@@ -82,6 +124,6 @@ FileUploader ..> finfo : usa para MIME
 note right of Router
   URLs amigables:
   /blog/mi-titulo
-  index.php es único punto de entrada
+  index.php es el único punto de entrada
 end note
 @enduml

@@ -42,6 +42,21 @@ class User
         ) : null;
     }
 
+    public static function findById(int $id): ?self
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id LIMIT 1");
+        $stmt->execute(['id' => $id]);
+        $data = $stmt->fetch();
+
+        return $data ? new self(
+            (int)$data['id'],
+            $data['username'],
+            $data['email'],
+            $data['password']
+        ) : null;
+    }
+
     public static function create(string $username, string $email, string $password): bool
     {
         $hashed = password_hash($password, PASSWORD_DEFAULT);

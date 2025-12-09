@@ -24,6 +24,22 @@ use App\Controllers\HomeController;
 use App\Controllers\PostController;
 use App\Controllers\AuthController;
 
+// Auto-login con cookie
+if (!\App\Core\SessionManager::isLoggedIn() && isset($_COOKIE['remember_token'])) {
+    $tokenParts = explode(':', $_COOKIE['remember_token']);
+    if (count($tokenParts) === 2) {
+        list($userId, $hash) = $tokenParts;
+        $expectedHash = hash_hmac('sha256', $userId, 'secret_key_123');
+        if (hash_equals($expectedHash, $hash)) {
+            // Necesitamos el modelo User, ya autoloaded
+            $user = \App\Models\User::findById((int)$userId);
+            if ($user) {
+                \App\Core\SessionManager::login($user->getId(), $user->getUsername());
+            }
+        }
+    }
+}
+
 $router = new Router();
 
 // Rutas públicas

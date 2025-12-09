@@ -113,6 +113,24 @@ Abre tu navegador y ve a:
 
 ```
 http://localhost/ProyectoPHP/public/
+
+
+OPCIÓN 2 — Iniciar servidor PHP manualmente (si quieres usar VSCode)
+
+Dentro de la carpeta del proyecto, abre una terminal en VSCode:
+
+cd C:\xampp\htdocs\ProyectoPHP
+
+
+Y ejecuta:
+
+php -S localhost:8000 -t public
+
+
+Ahora abre:
+
+👉 http://localhost:8000/
+
 ```
 
 🎉 **¡Listo!** Deberías ver la página principal del blog con los posts de ejemplo.

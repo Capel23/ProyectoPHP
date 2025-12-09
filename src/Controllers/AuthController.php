@@ -30,6 +30,14 @@ class AuthController
         $user = User::findByUsername($username);
         if ($user && $user->verifyPassword($password)) {
             SessionManager::login($user->getId(), $user->getUsername());
+
+            // Recordarme
+            if (!empty($_POST['remember'])) {
+                // Token simple: ID . : . HMAC(ID)
+                $token = $user->getId() . ':' . hash_hmac('sha256', (string)$user->getId(), 'secret_key_123');
+                setcookie('remember_token', $token, time() + (86400 * 30), "/", "", false, true); // 30 días, HttpOnly
+            }
+
             header('Location: ' . url('/admin/posts'));
             exit;
         } else {
@@ -92,6 +100,8 @@ class AuthController
     public function logout(): void
     {
         SessionManager::logout();
+        // Borrar cookie
+        setcookie('remember_token', '', time() - 3600, "/", "", false, true);
         header('Location: ' . url('/'));
         exit;
     }

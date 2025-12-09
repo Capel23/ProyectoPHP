@@ -79,6 +79,17 @@
             border-radius: 8px;
             margin: 1rem 0;
         }
+
+        [data-bs-theme="dark"] body {
+            background-color: #121212 !important; 
+            color: #e0e0e0;
+        }
+
+        [data-bs-theme="dark"] footer {
+            background-color: #1a1a1a !important; 
+            border-color: #2d2d2d !important;
+            color: #e0e0e0;
+        }
     </style>
 </head>
 
@@ -121,6 +132,11 @@
                             </a>
                         </li>
                     <?php endif; ?>
+                    <li class="nav-item">
+                        <button class="btn btn-link nav-link" id="themeToggle">
+                            <i class="bi bi-moon-stars"></i>
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -156,7 +172,58 @@
         </div>
     </footer>
 
+    <!-- Cookie Banner -->
+    <div id="cookieBanner" class="position-fixed bottom-0 start-0 w-100 bg-dark text-white p-3" style="display: none; z-index: 1050;">
+        <div class="container d-flex justify-content-between align-items-center">
+            <span>Usamos cookies para mejorar tu experiencia y mantener tu sesión. 🍪</span>
+            <button id="acceptCookies" class="btn btn-sm btn-light">Aceptar</button>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dark Mode Logic
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const icon = themeToggle.querySelector('i');
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-bs-theme', savedTheme);
+        updateIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            if (theme === 'dark') {
+                icon.className = 'bi bi-sun';
+            } else {
+                icon.className = 'bi bi-moon-stars';
+            }
+        }
+
+        // Cookie Banner Logic
+        const cookieBanner = document.getElementById('cookieBanner');
+        const acceptBtn = document.getElementById('acceptCookies');
+        
+        // --- PARA PRUEBAS: Descomenta la línea de abajo para ver el banner SIEMPRE ---
+         cookieBanner.style.display = 'block';
+
+        // --- MODO NORMAL: Solo sale si no has aceptado ---
+        if (!localStorage.getItem('cookiesAccepted')) {
+            cookieBanner.style.display = 'block';
+        }
+
+        acceptBtn.addEventListener('click', () => {
+            localStorage.setItem('cookiesAccepted', 'true');
+            cookieBanner.style.display = 'none';
+        });
+    </script>
 </body>
 
 </html>
