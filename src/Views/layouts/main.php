@@ -1,34 +1,144 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-bs-theme="light">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($title ?? 'Mi Blog Personal') ?></title>
+    <!-- Bootstrap 5.3 + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
     <style>
-        .post-image { max-width: 100%; height: auto; border-radius: 8px; }
+        :root {
+            --bs-body-font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --bs-heading-font-family: 'DM Serif Display', serif;
+        }
+
+        body {
+            background-color: #fafafa;
+            padding-top: 4.5rem;
+        }
+
+        .navbar-brand {
+            font-family: var(--bs-heading-font-family) !important;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 1.5rem 1.5rem;
+        }
+
+        .hero h1 {
+            font-family: var(--bs-heading-font-family);
+            font-weight: 600;
+            font-size: 2.8rem;
+        }
+
+        .post-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-image {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .btn-theme {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            border: none;
+        }
+
+        .btn-theme:hover {
+            opacity: 0.9;
+        }
+
+        .content {
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding: 2rem 0;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
     </style>
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/">Mi Blog</a>
-            <div>
-                <?php if (\App\Core\SessionManager::isLoggedIn()): ?>
-                    <span class="me-3">Hola, <?= htmlspecialchars($_SESSION['username']) ?></span>
-                    <a href="/admin/posts" class="btn btn-sm btn-outline-primary">Administrar</a>
-                    <a href="/logout" class="btn btn-sm btn-outline-danger">Salir</a>
-                <?php else: ?>
-                    <a href="/login" class="btn btn-sm btn-outline-secondary">Iniciar Sesión</a>
-                    <a href="/register" class="btn btn-sm btn-outline-info">Registrarse</a>
-                <?php endif; ?>
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-journal-text me-2"></i>Mi Blog
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
+                    <?php if (\App\Core\SessionManager::isLoggedIn()): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/posts">
+                                <i class="bi bi-pencil-square"></i> Admin
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                👋 <?= htmlspecialchars($_SESSION['username']) ?>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right"></i> Salir</a></li>
+                            </ul>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login"><i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-sm btn-theme text-white ms-2" href="/register">
+                                <i class="bi bi-person-plus"></i> Registrarse
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <!-- Mensajes -->
+    <div class="container">
         <?php if (!empty($_SESSION['error'])): ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
                 <?= htmlspecialchars($_SESSION['error']) ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
@@ -37,15 +147,25 @@
 
         <?php if (!empty($_SESSION['success'])): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-2"></i>
                 <?= htmlspecialchars($_SESSION['success']) ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
             <?php unset($_SESSION['success']); ?>
         <?php endif; ?>
-
-        <?= $content ?? '' ?>
     </div>
+
+    <!-- Contenido principal -->
+    <?= $content ?? '' ?>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center text-muted">
+            <p>© <?= date('Y') ?> Mi Blog Personal. Proyecto PHP - CMS.</p>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

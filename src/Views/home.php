@@ -1,22 +1,57 @@
 <?php $title = 'Inicio'; ?>
 <?php ob_start(); ?>
-<div class="row">
-    <div class="col-12">
-        <h1>Últimos Posts</h1>
+<!-- Hero -->
+<section class="hero">
+    <div class="container text-center">
+        <h1>Bienvenido a Mi Blog</h1>
+        <p class="lead mt-3">Reflexiones, tutoriales y experiencias en desarrollo web</p>
+        <?php if (!\App\Core\SessionManager::isLoggedIn()): ?>
+            <a href="/register" class="btn btn-light btn-lg mt-3">
+                <i class="bi bi-journal-plus me-2"></i>Crear tu cuenta
+            </a>
+        <?php endif; ?>
+    </div>
+</section>
+
+<!-- Posts -->
+<div class="container">
+    <div class="row">
         <?php if (empty($posts)): ?>
-            <p class="text-muted">No hay posts aún.</p>
-        <?php else: ?>
-            <div class="list-group">
-                <?php foreach ($posts as $post): ?>
-                    <a href="/blog/<?= htmlspecialchars($post->getSlug()) ?>" class="list-group-item list-group-item-action">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1"><?= htmlspecialchars($post->getTitle()) ?></h5>
-                            <small><?= date('d/m/Y', strtotime($post->getPublishedAt())) ?></small>
-                        </div>
-                        <p class="mb-1"><?= htmlspecialchars(substr(strip_tags($post->getContent()), 0, 150)) ?>...</p>
-                    </a>
-                <?php endforeach; ?>
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="bi bi-journal-x display-1 text-muted"></i>
+                    <h3 class="mt-3">No hay posts aún</h3>
+                    <?php if (\App\Core\SessionManager::isLoggedIn()): ?>
+                        <a href="/admin/posts/create" class="btn btn-theme text-white mt-3">
+                            <i class="bi bi-pencil"></i> Escribe tu primer post
+                        </a>
+                    <?php endif; ?>
+                </div>
             </div>
+        <?php else: ?>
+            <?php foreach ($posts as $post): ?>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card post-card h-100">
+                        <?php if ($post->getImagePath()): ?>
+                            <img src="<?= htmlspecialchars($post->getImagePath()) ?>" 
+                                 class="post-image" alt="<?= htmlspecialchars($post->getTitle()) ?>">
+                        <?php endif; ?>
+                        <div class="card-body d-flex flex-column">
+                            <small class="text-muted">
+                                <i class="bi bi-calendar"></i> <?= date('d M Y', strtotime($post->getPublishedAt())) ?>
+                            </small>
+                            <h5 class="card-title mt-2"><?= htmlspecialchars($post->getTitle()) ?></h5>
+                            <p class="card-text flex-grow-1">
+                                <?= htmlspecialchars(substr(strip_tags($post->getContent()), 0, 120)) ?>...
+                            </p>
+                            <a href="/blog/<?= htmlspecialchars($post->getSlug()) ?>" 
+                               class="btn btn-outline-primary mt-auto">
+                                Leer más <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         <?php endif; ?>
     </div>
 </div>
