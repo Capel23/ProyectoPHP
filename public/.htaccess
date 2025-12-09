@@ -1,0 +1,13 @@
+# Habilitar reescritura
+RewriteEngine On
+
+# Si el archivo/directorio NO existe, redirigir a index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Bloquear acceso directo a .git, .env, etc.
+RedirectMatch 404 /\.(git|ht|svn|env)
+
+# Prevenir listado de directorios
+Options -Indexes

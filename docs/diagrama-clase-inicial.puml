@@ -1,0 +1,39 @@
+@startuml
+title Diagrama de Clase Inicial (Versión Procedural)
+
+skinparam class {
+    BackgroundColor LightYellow
+    BorderColor #333
+}
+
+class index_php {
+    {field} +$action
+    {field} +$id
+    +switch($action)
+    +include('login.php')
+    +include('posts.php')
+    +mysql_query(...)
+}
+
+class login_php {
+    +if($_POST)
+    +mysql_query("SELECT...")
+    +password_verify(...)
+    +$_SESSION['user'] = ...
+}
+
+class posts_php {
+    +mysql_query("SELECT * FROM posts...")
+    +foreach($posts as $p)
+    +echo "<h2>{$p['title']}</h2>"
+}
+
+index_php --> login_php : include
+index_php --> posts_php : include
+
+note right of index_php
+  Mezcla de lógica, HTML y SQL.
+  Sin POO. URLs con parámetros:
+  index.php?action=show&id=5
+end note
+@enduml

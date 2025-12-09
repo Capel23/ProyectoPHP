@@ -1,0 +1,87 @@
+@startuml
+title Diagrama de Clase Final (POO + MVC-like)
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+
+class Router {
+    -routes: array
+    +get(path, handler)
+    +post(path, handler)
+    +dispatch(uri, method)
+}
+
+class Database {
+    -{static} instance: PDO
+    -__construct()
+    +{static} getConnection(): PDO
+}
+
+class SessionManager {
+    +{static} login(id, username)
+    +{static} logout()
+    +{static} isLoggedIn(): bool
+}
+
+class User {
+    -id: int
+    -username: string
+    -passwordHash: string
+    +verifyPassword(plain): bool
+    +{static} findByUsername(name): ?User
+}
+
+class Post {
+    -id: int
+    -userId: int
+    -title: string
+    -slug: string
+    -content: string
+    +{static} findBySlug(slug): ?Post
+    +{static} create(...): bool
+}
+
+class FileUploader {
+    +{static} upload(file): ?string
+}
+
+class HomeController {
+    +index()
+}
+
+class PostController {
+    +show(slug)
+    +adminIndex()
+    +create()
+    +store()
+}
+
+class AuthController {
+    +login()
+    +logout()
+}
+
+' Relaciones
+Router --> HomeController
+Router --> PostController
+Router --> AuthController
+
+PostController --> Post
+AuthController --> User
+AuthController --> SessionManager
+
+Post --> Database
+User --> Database
+
+FileUploader ..> finfo : usa para MIME
+
+note right of Router
+  URLs amigables:
+  /blog/mi-titulo
+  index.php es único punto de entrada
+end note
+@enduml
