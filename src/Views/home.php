@@ -6,7 +6,7 @@
         <h1>Bienvenido a BlogCap</h1>
         <p class="lead mt-3">Reflexiones, tutoriales y experiencias en desarrollo web</p>
         <?php if (!\App\Core\SessionManager::isLoggedIn()): ?>
-            <a href="/register" class="btn btn-light btn-lg mt-3">
+            <a href="<?= url('/register') ?>" class="btn btn-light btn-lg mt-3">
                 <i class="bi bi-journal-plus me-2"></i>Crear tu cuenta
             </a>
         <?php endif; ?>
@@ -22,7 +22,7 @@
                     <i class="bi bi-journal-x display-1 text-muted"></i>
                     <h3 class="mt-3">No hay posts aún</h3>
                     <?php if (\App\Core\SessionManager::isLoggedIn()): ?>
-                        <a href="/admin/posts/create" class="btn btn-theme text-white mt-3">
+                        <a href="<?= url('/admin/posts/create') ?>" class="btn btn-theme text-white mt-3">
                             <i class="bi bi-pencil"></i> Escribe tu primer post
                         </a>
                     <?php endif; ?>
@@ -46,7 +46,7 @@
                             <p class="card-text flex-grow-1">
                                 <?= htmlspecialchars(substr(strip_tags($post->getContent()), 0, 120)) ?>...
                             </p>
-                            <a href="/blog/<?= htmlspecialchars($post->getSlug()) ?>"
+                            <a href="<?= url('/blog/' . htmlspecialchars($post->getSlug())) ?>"
                                 class="btn btn-outline-primary mt-auto">
                                 Leer más <i class="bi bi-arrow-right"></i>
                             </a>

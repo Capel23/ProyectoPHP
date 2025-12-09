@@ -86,7 +86,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="<?= url('/') ?>">
                 <i class="bi bi-journal-text me-2"></i>BlogCap
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -95,11 +95,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Inicio</a>
+                        <a class="nav-link" href="<?= url('/') ?>">Inicio</a>
                     </li>
                     <?php if (\App\Core\SessionManager::isLoggedIn()): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin/posts">
+                            <a class="nav-link" href="<?= url('/admin/posts') ?>">
                                 <i class="bi bi-pencil-square"></i> Admin
                             </a>
                         </li>
@@ -108,15 +108,15 @@
                                 👋 <?= htmlspecialchars($_SESSION['username']) ?>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right"></i> Salir</a></li>
+                                <li><a class="dropdown-item" href="<?= url('/logout') ?>"><i class="bi bi-box-arrow-right"></i> Salir</a></li>
                             </ul>
                         </li>
                     <?php else: ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="/login"><i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión</a>
+                            <a class="nav-link" href="<?= url('/login') ?>"><i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión</a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-sm btn-theme text-white ms-2" href="/register">
+                            <a class="btn btn-sm btn-theme text-white ms-2" href="<?= url('/register') ?>">
                                 <i class="bi bi-person-plus"></i> Registrarse
                             </a>
                         </li>

@@ -8,7 +8,7 @@
                     <h3>Crear Cuenta</h3>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="/register">
+                    <form method="POST" action="<?= url('/register') ?>">
                         <div class="mb-3">
                             <label for="username" class="form-label">Usuario</label>
                             <input type="text" class="form-control" id="username" name="username" required minlength="3" maxlength="30">
@@ -28,7 +28,7 @@
                         <button type="submit" class="btn btn-success w-100">Registrarse</button>
                     </form>
                     <div class="mt-3 text-center">
-                        <a href="/login">¿Ya tienes cuenta? Inicia sesión</a>
+                        <a href="<?= url('/login') ?>">¿Ya tienes cuenta? Inicia sesión</a>
                     </div>
                 </div>
             </div>

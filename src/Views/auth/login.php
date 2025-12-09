@@ -8,7 +8,7 @@
                     <h3>Iniciar Sesión</h3>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="/login">
+                    <form method="POST" action="<?= url('/login') ?>">
                         <div class="mb-3">
                             <label for="username" class="form-label">Usuario</label>
                             <input type="text" class="form-control" id="username" name="username" required>
@@ -20,7 +20,7 @@
                         <button type="submit" class="btn btn-primary w-100">Entrar</button>
                     </form>
                     <div class="mt-3 text-center">
-                        <a href="/register">¿No tienes cuenta? Regístrate</a>
+                        <a href="<?= url('/register') ?>">¿No tienes cuenta? Regístrate</a>
                     </div>
                 </div>
             </div>

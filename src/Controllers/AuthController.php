@@ -23,18 +23,18 @@ class AuthController
 
         if (empty($username) || empty($password)) {
             $_SESSION['error'] = 'Usuario y contraseña requeridos';
-            header('Location: /login');
+            header('Location: ' . url('/login'));
             exit;
         }
 
         $user = User::findByUsername($username);
         if ($user && $user->verifyPassword($password)) {
             SessionManager::login($user->getId(), $user->getUsername());
-            header('Location: /admin/posts');
+            header('Location: ' . url('/admin/posts'));
             exit;
         } else {
             $_SESSION['error'] = 'Credenciales incorrectas';
-            header('Location: /login');
+            header('Location: ' . url('/login'));
             exit;
         }
     }
@@ -57,34 +57,34 @@ class AuthController
 
         if (empty($username) || empty($email) || empty($password)) {
             $_SESSION['error'] = 'Todos los campos son obligatorios';
-            header('Location: /register');
+            header('Location: ' . url('/register'));
             exit;
         }
 
         if (!Validator::validateEmail($email)) {
             $_SESSION['error'] = 'Email inválido';
-            header('Location: /register');
+            header('Location: ' . url('/register'));
             exit;
         }
 
         if ($password !== $password2) {
             $_SESSION['error'] = 'Las contraseñas no coinciden';
-            header('Location: /register');
+            header('Location: ' . url('/register'));
             exit;
         }
 
         if (!Validator::validateLength($password, 6, 100)) {
             $_SESSION['error'] = 'La contraseña debe tener al menos 6 caracteres';
-            header('Location: /register');
+            header('Location: ' . url('/register'));
             exit;
         }
 
         if (User::create($username, $email, $password)) {
             $_SESSION['success'] = 'Registro exitoso. Ahora inicia sesión.';
-            header('Location: /login');
+            header('Location: ' . url('/login'));
         } else {
             $_SESSION['error'] = 'Error al registrar. ¿Ya existe el usuario o email?';
-            header('Location: /register');
+            header('Location: ' . url('/register'));
         }
         exit;
     }
@@ -92,7 +92,7 @@ class AuthController
     public function logout(): void
     {
         SessionManager::logout();
-        header('Location: /');
+        header('Location: ' . url('/'));
         exit;
     }
 }

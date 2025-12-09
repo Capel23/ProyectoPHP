@@ -57,7 +57,22 @@ class Post
     }
     public function getImagePath(): ?string
     {
-        return $this->imagePath;
+        if ($this->imagePath === null) {
+            return null;
+        }
+        
+        // Si ya tiene el base path completo, devolverlo tal cual
+        if (strpos($this->imagePath, '/ProyectoPHP/public/') === 0) {
+            return $this->imagePath;
+        }
+        
+        // Si la ruta empieza con /, agregar el base path completo
+        if (strpos($this->imagePath, '/') === 0) {
+            return url($this->imagePath);
+        }
+        
+        // Si no tiene /, es solo el nombre del archivo, agregar /uploads/
+        return url('/uploads/' . $this->imagePath);
     }
     public function getPublishedAt(): string
     {

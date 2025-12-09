@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-12">
             <h2>Editar Post: <?= htmlspecialchars($post->getTitle()) ?></h2>
-            <form method="POST" action="/admin/posts/<?= $post->getId() ?>" enctype="multipart/form-data">
+            <form method="POST" action="<?= url('/admin/posts/' . $post->getId()) ?>" enctype="multipart/form-data">
                 <input type="hidden" name="_method" value="PUT">
                 <div class="mb-3">
                     <label for="title" class="form-label">Título</label>
@@ -28,7 +28,7 @@
                     <?php endif; ?>
                 </div>
                 <button type="submit" class="btn btn-warning">Actualizar Post</button>
-                <a href="/admin/posts" class="btn btn-secondary">Cancelar</a>
+                <a href="<?= url('/admin/posts') ?>" class="btn btn-secondary">Cancelar</a>
             </form>
         </div>
     </div>

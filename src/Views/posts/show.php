@@ -6,7 +6,7 @@
             <h1 class="mb-0"><?= htmlspecialchars($post->getTitle()) ?></h1>
             <?php if (\App\Core\SessionManager::isLoggedIn() && $post->getUserId() === \App\Core\SessionManager::getUserId()): ?>
                 <div>
-                    <a href="/admin/posts/<?= $post->getId() ?>/edit" class="btn btn-sm btn-outline-warning">
+                    <a href="<?= url('/admin/posts/' . $post->getId() . '/edit') ?>" class="btn btn-sm btn-outline-warning">
                         <i class="bi bi-pencil"></i> Editar
                     </a>
                 </div>
@@ -31,11 +31,11 @@
     </article>
 
     <div class="d-flex justify-content-between">
-        <a href="/" class="btn btn-outline-secondary">
+        <a href="<?= url('/') ?>" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Volver al blog
         </a>
         <?php if (\App\Core\SessionManager::isLoggedIn()): ?>
-            <a href="/admin/posts/create" class="btn btn-theme text-white">
+            <a href="<?= url('/admin/posts/create') ?>" class="btn btn-theme text-white">
                 <i class="bi bi-journal-plus"></i> Nuevo post
             </a>
         <?php endif; ?>

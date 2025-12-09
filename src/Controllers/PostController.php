@@ -38,7 +38,7 @@ class PostController
     {
         if (!SessionManager::isLoggedIn()) {
             $_SESSION['error'] = 'Acceso denegado. Debes iniciar sesión.';
-            header('Location: /login');
+            header('Location: ' . url('/login'));
             exit;
         }
 
@@ -54,7 +54,7 @@ class PostController
     {
         if (!SessionManager::isLoggedIn()) {
             $_SESSION['error'] = 'Acceso denegado. Debes iniciar sesión.';
-            header('Location: /login');
+            header('Location: ' . url('/login'));
             exit;
         }
 
@@ -78,7 +78,7 @@ class PostController
 
         if (empty($title) || empty($content)) {
             $_SESSION['error'] = 'Título y contenido son obligatorios';
-            header('Location: /admin/posts/create');
+            header('Location: ' . url('/admin/posts/create'));
             exit;
         }
 
@@ -87,17 +87,17 @@ class PostController
             $imagePath = FileUploader::upload($_FILES['image']);
             if (!$imagePath) {
                 $_SESSION['error'] = 'Error al subir la imagen (tipo, tamaño o nombre inválido)';
-                header('Location: /admin/posts/create');
+                header('Location: ' . url('/admin/posts/create'));
                 exit;
             }
         }
 
         if (Post::create(SessionManager::getUserId(), $title, $content, $imagePath)) {
             $_SESSION['success'] = 'Post creado exitosamente';
-            header('Location: /admin/posts');
+            header('Location: ' . url('/admin/posts'));
         } else {
             $_SESSION['error'] = 'Error al crear el post';
-            header('Location: /admin/posts/create');
+            header('Location: ' . url('/admin/posts/create'));
         }
         exit;
     }
@@ -106,14 +106,14 @@ class PostController
     {
         if (!SessionManager::isLoggedIn()) {
             $_SESSION['error'] = 'Acceso denegado. Debes iniciar sesión.';
-            header('Location: /login');
+            header('Location: ' . url('/login'));
             exit;
         }
 
         $post = Post::findById($id);
         if (!$post || $post->getUserId() !== SessionManager::getUserId()) {
             $_SESSION['error'] = 'Post no encontrado o acceso denegado';
-            header('Location: /admin/posts');
+            header('Location: ' . url('/admin/posts'));
             exit;
         }
 
@@ -137,7 +137,7 @@ class PostController
 
         if (empty($title) || empty($content)) {
             $_SESSION['error'] = 'Título y contenido son obligatorios';
-            header("Location: /admin/posts/$id/edit");
+            header('Location: ' . url("/admin/posts/$id/edit"));
             exit;
         }
 
@@ -146,7 +146,7 @@ class PostController
             $imagePath = FileUploader::upload($_FILES['image']);
             if (!$imagePath) {
                 $_SESSION['error'] = 'Error al subir la imagen';
-                header("Location: /admin/posts/$id/edit");
+                header('Location: ' . url("/admin/posts/$id/edit"));
                 exit;
             }
         } else {
@@ -156,10 +156,10 @@ class PostController
 
         if (Post::update($id, $title, $content, $imagePath)) {
             $_SESSION['success'] = 'Post actualizado';
-            header('Location: /admin/posts');
+            header('Location: ' . url('/admin/posts'));
         } else {
             $_SESSION['error'] = 'Error al actualizar';
-            header("Location: /admin/posts/$id/edit");
+            header('Location: ' . url("/admin/posts/$id/edit"));
         }
         exit;
     }
@@ -175,7 +175,7 @@ class PostController
         $post = Post::findById($id);
         if (!$post || $post->getUserId() !== SessionManager::getUserId()) {
             $_SESSION['error'] = 'Post no encontrado o acceso denegado';
-            header('Location: /admin/posts');
+            header('Location: ' . url('/admin/posts'));
             exit;
         }
 
@@ -184,7 +184,7 @@ class PostController
         } else {
             $_SESSION['error'] = 'Error al eliminar';
         }
-        header('Location: /admin/posts');
+        header('Location: ' . url('/admin/posts'));
         exit;
     }
 }

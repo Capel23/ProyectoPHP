@@ -16,6 +16,9 @@ spl_autoload_register(function ($class) {
     }
 });
 
+// Cargar funciones auxiliares
+require_once __DIR__ . '/../src/helpers.php';
+
 use App\Core\Router;
 use App\Controllers\HomeController;
 use App\Controllers\PostController;
@@ -46,6 +49,17 @@ if (\App\Core\SessionManager::isLoggedIn()) {
 
 // Obtener URI y método
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+// Eliminar el path base si existe (/ProyectoPHP/public)
+$basePath = '/ProyectoPHP/public';
+if (strpos($uri, $basePath) === 0) {
+    $uri = substr($uri, strlen($basePath));
+}
+// Asegurar que siempre empiece con /
+if (empty($uri)) {
+    $uri = '/';
+}
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 // Ejecutar enrutador

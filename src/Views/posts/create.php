@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-12">
             <h2>Crear Nuevo Post</h2>
-            <form method="POST" action="/admin/posts" enctype="multipart/form-data">
+            <form method="POST" action="<?= url('/admin/posts') ?>" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title" class="form-label">Título</label>
                     <input type="text" class="form-control" id="title" name="title" required maxlength="255">
@@ -19,7 +19,7 @@
                     <div class="form-text">Formatos permitidos: JPG, PNG, GIF (máx. 5MB)</div>
                 </div>
                 <button type="submit" class="btn btn-success">Crear Post</button>
-                <a href="/admin/posts" class="btn btn-secondary">Cancelar</a>
+                <a href="<?= url('/admin/posts') ?>" class="btn btn-secondary">Cancelar</a>
             </form>
         </div>
     </div>
