@@ -13,6 +13,7 @@ class Post
     private string $content;
     private ?string $imagePath;
     private string $publishedAt;
+    private string $authorName;
 
     public function __construct(
         int $id,
@@ -21,7 +22,8 @@ class Post
         string $slug,
         string $content,
         ?string $imagePath = null,
-        string $publishedAt = ''
+        string $publishedAt = '',
+        string $authorName = ''
     ) {
         $this->id = $id;
         $this->userId = $userId;
@@ -30,6 +32,7 @@ class Post
         $this->content = $content;
         $this->imagePath = $imagePath;
         $this->publishedAt = $publishedAt ?: date('Y-m-d H:i:s');
+        $this->authorName = $authorName;
     }
 
     public function getId(): int
@@ -60,11 +63,20 @@ class Post
     {
         return $this->publishedAt;
     }
+    public function getAuthorName(): string
+    {
+        return $this->authorName;
+    }
 
     public static function all(): array
     {
         $pdo = Database::getConnection();
-        $stmt = $pdo->query("SELECT * FROM posts ORDER BY published_at DESC");
+        $stmt = $pdo->query("
+            SELECT posts.*, users.username as author_name 
+            FROM posts 
+            JOIN users ON posts.user_id = users.id 
+            ORDER BY published_at DESC
+        ");
         $posts = [];
         while ($row = $stmt->fetch()) {
             $posts[] = new self(
@@ -74,7 +86,8 @@ class Post
                 $row['slug'],
                 $row['content'],
                 $row['image_path'],
-                $row['published_at']
+                $row['published_at'],
+                $row['author_name']
             );
         }
         return $posts;
@@ -83,7 +96,13 @@ class Post
     public static function findBySlug(string $slug): ?self
     {
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT * FROM posts WHERE slug = :slug LIMIT 1");
+        $stmt = $pdo->prepare("
+            SELECT posts.*, users.username as author_name 
+            FROM posts 
+            JOIN users ON posts.user_id = users.id 
+            WHERE slug = :slug 
+            LIMIT 1
+        ");
         $stmt->execute(['slug' => $slug]);
         $data = $stmt->fetch();
 
@@ -96,14 +115,21 @@ class Post
             $data['slug'],
             $data['content'],
             $data['image_path'],
-            $data['published_at']
+            $data['published_at'],
+            $data['author_name']
         );
     }
 
     public static function findById(int $id): ?self
     {
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT * FROM posts WHERE id = :id LIMIT 1");
+        $stmt = $pdo->prepare("
+            SELECT posts.*, users.username as author_name 
+            FROM posts 
+            JOIN users ON posts.user_id = users.id 
+            WHERE posts.id = :id 
+            LIMIT 1
+        ");
         $stmt->execute(['id' => $id]);
         $data = $stmt->fetch();
 
@@ -116,7 +142,8 @@ class Post
             $data['slug'],
             $data['content'],
             $data['image_path'],
-            $data['published_at']
+            $data['published_at'],
+            $data['author_name']
         );
     }
 

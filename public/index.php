@@ -1,10 +1,9 @@
 <?php
-// public/index.php — Front Controller único
+// public/index.php
 
 // Iniciar sesión
 session_start();
 
-// Autocarga manual (PSR-4 simple)
 spl_autoload_register(function ($class) {
     $prefix = 'App\\';
     if (strpos($class, $prefix) !== 0) return;
@@ -35,7 +34,7 @@ $router->get('/register', [AuthController::class, 'showRegister']);
 $router->post('/register', [AuthController::class, 'register']);
 $router->get('/logout', [AuthController::class, 'logout']);
 
-// Rutas protegidas (solo si está logueado)
+// Rutas protegidas
 if (\App\Core\SessionManager::isLoggedIn()) {
     $router->get('/admin/posts', [PostController::class, 'adminIndex']);
     $router->get('/admin/posts/create', [PostController::class, 'create']);

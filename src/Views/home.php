@@ -39,6 +39,8 @@
                         <div class="card-body d-flex flex-column">
                             <small class="text-muted">
                                 <i class="bi bi-calendar"></i> <?= date('d M Y', strtotime($post->getPublishedAt())) ?>
+                                <span class="mx-2">•</span>
+                                <i class="bi bi-person"></i> <?= htmlspecialchars($post->getAuthorName()) ?>
                             </small>
                             <h5 class="card-title mt-2"><?= htmlspecialchars($post->getTitle()) ?></h5>
                             <p class="card-text flex-grow-1">

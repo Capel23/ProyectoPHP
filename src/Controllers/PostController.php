@@ -150,7 +150,6 @@ class PostController
                 exit;
             }
         } else {
-            // Conservar imagen actual
             $post = Post::findById($id);
             $imagePath = $post ? $post->getImagePath() : null;
         }
