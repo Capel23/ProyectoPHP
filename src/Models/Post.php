@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Core\Database;
@@ -31,13 +32,34 @@ class Post
         $this->publishedAt = $publishedAt ?: date('Y-m-d H:i:s');
     }
 
-    public function getId(): int { return $this->id; }
-    public function getUserId(): int { return $this->userId; }
-    public function getTitle(): string { return $this->title; }
-    public function getSlug(): string { return $this->slug; }
-    public function getContent(): string { return $this->content; }
-    public function getImagePath(): ?string { return $this->imagePath; }
-    public function getPublishedAt(): string { return $this->publishedAt; }
+    public function getId(): int
+    {
+        return $this->id;
+    }
+    public function getUserId(): int
+    {
+        return $this->userId;
+    }
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+    public function getImagePath(): ?string
+    {
+        return $this->imagePath;
+    }
+    public function getPublishedAt(): string
+    {
+        return $this->publishedAt;
+    }
 
     public static function all(): array
     {
@@ -45,7 +67,15 @@ class Post
         $stmt = $pdo->query("SELECT * FROM posts ORDER BY published_at DESC");
         $posts = [];
         while ($row = $stmt->fetch()) {
-            $posts[] = new self(...array_values($row));
+            $posts[] = new self(
+                (int)$row['id'],
+                (int)$row['user_id'],
+                $row['title'],
+                $row['slug'],
+                $row['content'],
+                $row['image_path'],
+                $row['published_at']
+            );
         }
         return $posts;
     }
@@ -57,7 +87,17 @@ class Post
         $stmt->execute(['slug' => $slug]);
         $data = $stmt->fetch();
 
-        return $data ? new self(...array_values($data)) : null;
+        if (!$data) return null;
+
+        return new self(
+            (int)$data['id'],
+            (int)$data['user_id'],
+            $data['title'],
+            $data['slug'],
+            $data['content'],
+            $data['image_path'],
+            $data['published_at']
+        );
     }
 
     public static function findById(int $id): ?self
@@ -67,7 +107,17 @@ class Post
         $stmt->execute(['id' => $id]);
         $data = $stmt->fetch();
 
-        return $data ? new self(...array_values($data)) : null;
+        if (!$data) return null;
+
+        return new self(
+            (int)$data['id'],
+            (int)$data['user_id'],
+            $data['title'],
+            $data['slug'],
+            $data['content'],
+            $data['image_path'],
+            $data['published_at']
+        );
     }
 
     public static function create(int $userId, string $title, string $content, ?string $imagePath = null): bool

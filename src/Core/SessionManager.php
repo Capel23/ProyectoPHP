@@ -8,7 +8,7 @@ class SessionManager
         $_SESSION['user_id'] = $userId;
         $_SESSION['username'] = $username;
         $_SESSION['logged_in'] = true;
-        session_regenerate_id(true); // Prevenir fijación de sesión
+        session_regenerate_id(true);
     }
 
     public static function logout(): void

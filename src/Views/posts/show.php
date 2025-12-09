@@ -1,5 +1,5 @@
 <?php $title = $post->getTitle(); ?>
-<?php ob_start(); ?>
+
 <div class="container">
     <article class="bg-white rounded-3 shadow-sm p-4 mb-4">
         <div class="d-flex justify-content-between align-items-start mb-3">
@@ -12,16 +12,16 @@
                 </div>
             <?php endif; ?>
         </div>
-        
+
         <div class="text-muted mb-4">
             <i class="bi bi-calendar"></i> <?= date('d \d\e F \d\e Y \| H:i', strtotime($post->getPublishedAt())) ?>
         </div>
 
         <?php if ($post->getImagePath()): ?>
             <div class="mb-4">
-                <img src="<?= htmlspecialchars($post->getImagePath()) ?>" 
-                     class="img-fluid rounded" 
-                     alt="<?= htmlspecialchars($post->getTitle()) ?>">
+                <img src="<?= htmlspecialchars($post->getImagePath()) ?>"
+                    class="img-fluid rounded"
+                    alt="<?= htmlspecialchars($post->getTitle()) ?>">
             </div>
         <?php endif; ?>
 
@@ -41,5 +41,3 @@
         <?php endif; ?>
     </div>
 </div>
-<?php $content = ob_get_clean(); ?>
-<?php include __DIR__ . '/../layouts/main.php'; ?>

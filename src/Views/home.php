@@ -1,9 +1,9 @@
-<?php $title = 'Inicio'; ?>
-<?php ob_start(); ?>
+<?php $title = 'BlogCap'; ?>
+
 <!-- Hero -->
 <section class="hero">
     <div class="container text-center">
-        <h1>Bienvenido a Mi Blog</h1>
+        <h1>Bienvenido a BlogCap</h1>
         <p class="lead mt-3">Reflexiones, tutoriales y experiencias en desarrollo web</p>
         <?php if (!\App\Core\SessionManager::isLoggedIn()): ?>
             <a href="/register" class="btn btn-light btn-lg mt-3">
@@ -33,8 +33,8 @@
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div class="card post-card h-100">
                         <?php if ($post->getImagePath()): ?>
-                            <img src="<?= htmlspecialchars($post->getImagePath()) ?>" 
-                                 class="post-image" alt="<?= htmlspecialchars($post->getTitle()) ?>">
+                            <img src="<?= htmlspecialchars($post->getImagePath()) ?>"
+                                class="post-image" alt="<?= htmlspecialchars($post->getTitle()) ?>">
                         <?php endif; ?>
                         <div class="card-body d-flex flex-column">
                             <small class="text-muted">
@@ -44,8 +44,8 @@
                             <p class="card-text flex-grow-1">
                                 <?= htmlspecialchars(substr(strip_tags($post->getContent()), 0, 120)) ?>...
                             </p>
-                            <a href="/blog/<?= htmlspecialchars($post->getSlug()) ?>" 
-                               class="btn btn-outline-primary mt-auto">
+                            <a href="/blog/<?= htmlspecialchars($post->getSlug()) ?>"
+                                class="btn btn-outline-primary mt-auto">
                                 Leer más <i class="bi bi-arrow-right"></i>
                             </a>
                         </div>
@@ -55,5 +55,3 @@
         <?php endif; ?>
     </div>
 </div>
-<?php $content = ob_get_clean(); ?>
-<?php include __DIR__ . '/layouts/main.php'; ?>

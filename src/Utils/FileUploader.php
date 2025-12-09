@@ -33,7 +33,7 @@ class FileUploader
         $target = self::UPLOAD_DIR . $safeName;
 
         if (move_uploaded_file($file['tmp_name'], $target)) {
-            return '/uploads/' . $safeName; // Ruta web-accessible
+            return '/uploads/' . $safeName;
         }
 
         return null;
