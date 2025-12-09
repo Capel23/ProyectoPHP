@@ -4,6 +4,6 @@ return [
     'host'     => 'localhost',
     'dbname'   => 'blog_cms',
     'username' => 'root',
-    'password' => '',
+    'password' => 'Hola123',
     'charset'  => 'utf8mb4'
 ];
