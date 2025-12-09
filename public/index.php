@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // public/index.php
 
 // Iniciar sesión
@@ -37,15 +37,13 @@ $router->get('/register', [AuthController::class, 'showRegister']);
 $router->post('/register', [AuthController::class, 'register']);
 $router->get('/logout', [AuthController::class, 'logout']);
 
-// Rutas protegidas
-if (\App\Core\SessionManager::isLoggedIn()) {
-    $router->get('/admin/posts', [PostController::class, 'adminIndex']);
-    $router->get('/admin/posts/create', [PostController::class, 'create']);
-    $router->post('/admin/posts', [PostController::class, 'store']);
-    $router->get('/admin/posts/{id}/edit', [PostController::class, 'edit']);
-    $router->post('/admin/posts/{id}', [PostController::class, 'update']);
-    $router->post('/admin/posts/{id}/delete', [PostController::class, 'delete']);
-}
+// Rutas protegidas (la autenticación se verifica en los controladores)
+$router->get('/admin/posts', [PostController::class, 'adminIndex']);
+$router->get('/admin/posts/create', [PostController::class, 'create']);
+$router->post('/admin/posts', [PostController::class, 'store']);
+$router->get('/admin/posts/{id}/edit', [PostController::class, 'edit']);
+$router->post('/admin/posts/{id}', [PostController::class, 'update']);
+$router->post('/admin/posts/{id}/delete', [PostController::class, 'delete']);
 
 // Obtener URI y método
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
